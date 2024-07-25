@@ -1,23 +1,45 @@
 import Image from "next/image";
 
+import mockTasks from "./mockData";
+import TaskComponent from "./_components/TaskComponent";
+import AddNewTodo from "./_components/AddNewTodo";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-very-light-gray text-slate-950">
-      <div className="flex gap-4">
-        <div>
-          <Image
-            src="/images/Logo.svg"
-            alt="Logo"
-            width={50}
-            height={50}
-          />
+    <main className="flex min-h-screen flex-col items-center p-24 bg-very-light-gray text-slate-950 gap-5">
+      <div>
+        <div className="flex gap-4 flex-wrap">
+          <div className="shrink-0">
+            <Image
+              src="/images/Logo.svg"
+              alt="Logo"
+              width={50}
+              height={50}
+            />
+          </div>
+          <div>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <h1 className="text-6xl font-semibold">My Task Board</h1>
+                <Image
+                  src="/images/Edit_duotone.svg"
+                  alt="Pencil"
+                  width={35}
+                  height={35}
+                />
+              </div>
+              <p className="text-xl">
+                Tasks to keep organized
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-6xl font-semibold">My Task Board</h1>
-          <p className="text-xl">
-            Tasks to keep organized
-          </p>
+        <div className="flex flex-col gap-6 mt-8 w-full justify-start items-start">
+          {mockTasks.map((task) => (
+            <TaskComponent key={task.id} task={task} />
+          ))}
         </div>
+        <AddNewTodo />
       </div>
     </main>
   );
