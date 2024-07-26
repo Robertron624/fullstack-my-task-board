@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 
-
 const outfit = Outfit({
   preload: true,
-  fallback:[ "sans-serif"],
+  fallback: ["sans-serif"],
   weight: ["400", "500", "700"],
   subsets: ["latin"],
 });
@@ -21,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={outfit.className}>{children}</body>
+    <html lang='en'>
+      <body className={outfit.className}>
+        {children} <div id='modal-root'></div>
+      </body>
     </html>
   );
 }

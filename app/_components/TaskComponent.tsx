@@ -1,28 +1,6 @@
-import type { Task, TaskStatus } from "../types";
-import Image from "next/image";
-
+import type { Task } from "../types";
 import { CompletedIcon, InProgressIcon, WontDoIcon } from "./StatusIcons";
-
-const statusStylesObject = {
-  "in-progress": {
-    icon: InProgressIcon,
-    color: "bg-light-yellow",
-  },
-  completed: {
-    icon: CompletedIcon,
-    color: "bg-light-green",
-  },
-  "won't-do": {
-    icon: WontDoIcon,
-    color: "bg-light-pink",
-  },
-  "to-do": {
-    icon: null,
-    color: "bg-light-blue-gray",
-  },
-};
-
-const getStatusStyles = (status: TaskStatus) => statusStylesObject[status];
+import { getStatusStyles } from "../utils";
 
 export default function TaskComponent({
   task,
@@ -30,7 +8,7 @@ export default function TaskComponent({
   task: Task;
 }>) {
   const { name, status, description, icon } = task;
-  const { icon: Icon, color } = getStatusStyles(status);
+  const { icon: Icon, color, wrapperIcon } = getStatusStyles(status);
 
   return (
     <div
@@ -45,7 +23,9 @@ export default function TaskComponent({
           )}
         </div>
       </div>
-      {Icon && <Icon />}
+      <div className={`rounded-lg ${wrapperIcon} px-2 py-1 flex items-center`}>
+        {Icon && <Icon />}
+      </div>
     </div>
   );
 }
