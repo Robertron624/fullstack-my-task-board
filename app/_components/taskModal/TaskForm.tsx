@@ -25,6 +25,7 @@ export default function TaskForm({ isEditMode = false }: TaskFormProps) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<TaskFormValues>();
 
   const onSubmit: SubmitHandler<TaskFormValues> = (data) => {
@@ -33,10 +34,12 @@ export default function TaskForm({ isEditMode = false }: TaskFormProps) {
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedIcon(e.target.value);
+    setValue("taskIcon", e.target.value);
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedStatus(e.target.value as TaskStatus);
+    setValue("taskStatus", e.target.value as TaskStatus);
   };
 
   return (
@@ -103,15 +106,10 @@ export default function TaskForm({ isEditMode = false }: TaskFormProps) {
               >
                 <input
                   type='radio'
-                  // name='taskIcon'
                   value={option.value}
                   checked={selectedIcon === option.value}
-                  // onChange={(e) => {
-                  //   handleIconChange(e);
-                  //   register("taskIcon").onChange(e);
-                  // }}
                   className='sr-only'
-                  {...register("taskIcon")}
+                  onChange={handleIconChange}
                 />
                 {option.value}
                 <span className='sr-only'>{option.label}</span>
@@ -141,16 +139,11 @@ export default function TaskForm({ isEditMode = false }: TaskFormProps) {
               >
                 <input
                   type='radio'
-                  // name='taskStatus'
+                  name='taskStatus'
                   value={option.value}
                   checked={selectedIcon === option.value}
-                  // onChange={(e) => {
-                  //   handleStatusChange(e);
-                  //   register("taskStatus").onChange(e);
-                  // }}
+                  onChange={handleStatusChange}
                   className='sr-only'
-
-                  {...register("taskStatus")}
                 />
                 <div className='flex gap-2 items-center font-medium'>
                   <div className={`rounded-lg ${wrapperIcon} px-2 py-1`}>
