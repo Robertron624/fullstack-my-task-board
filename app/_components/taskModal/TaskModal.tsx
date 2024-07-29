@@ -1,9 +1,5 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { taskIconOptions, statusOptions } from "@/app/constants";
-import { useState } from "react";
-import { getStatusStyles } from "@/app/utils";
-import { TaskStatus } from "@/app/types";
 import TaskForm from "./TaskForm";
 
 // Create a new portal for the new task modal
@@ -40,7 +36,7 @@ export default function Modal({ isOpen, onClose, isEditMode=false }: ModalProps)
             <span className='sr-only'>Close modal</span>
           </button>
         </div>
-        <TaskForm isEditMode={isEditMode} />
+        <TaskForm isEditMode={isEditMode} onCloseModal={onClose}/>
       </div>
     </div>,
     document.getElementById("modal-root")!

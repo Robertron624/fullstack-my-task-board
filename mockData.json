@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1",
+    "name": "Task 1",
+    "description": "Task 1 description",
+    "status": "in-progress",
+    "icon": "📚"
+  },
+  {
+    "id": "2",
+    "name": "Task 2",
+    "description": "Task 2 description",
+    "status": "completed",
+    "icon": "☕️"
+  },
+  {
+    "id": "3",
+    "name": "Task 3",
+    "description": "Task 3 description",
+    "status": "won't-do",
+    "icon": "❤️"
+  },
+  {
+    "id": "4",
+    "name": "Task 4",
+    "description": "Task 4 description",
+    "status": "to-do",
+    "icon": "⏰"
+  },
+  {
+    "name": "asdasd",
+    "description": "asdasd",
+    "icon": "💻",
+    "status": "completed",
+    "id": "2q6clsxz7"
+  },
+  {
+    "name": "My task example",
+    "description": "My task description example",
+    "icon": "❤️",
+    "status": "in-progress",
+    "id": "xvp41kjoz"
+  },
+  {
+    "name": "asddasd",
+    "description": "asdasd",
+    "icon": "🚀",
+    "status": "won't-do",
+    "id": "7vrr0mtlq"
+  }
+]

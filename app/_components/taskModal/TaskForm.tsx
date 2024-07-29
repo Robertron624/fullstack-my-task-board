@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { taskIconOptions, statusOptions } from "@/app/constants";
-import { TaskStatus } from "@/app/types";
+import { Task, TaskStatus } from "@/app/types";
 import { useState } from "react";
 import { getStatusStyles } from "@/app/utils";
 
@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 interface TaskFormProps {
   isEditMode?: boolean;
+  onCloseModal: () => void;
 }
 
 interface TaskFormValues {
@@ -17,7 +18,25 @@ interface TaskFormValues {
   taskStatus: TaskStatus | null;
 }
 
-export default function TaskForm({ isEditMode = false }: TaskFormProps) {
+const addNewTask = async (data: Task) => {
+  try {
+    const response = await fetch("http://localhost:3000/api/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.error("response not ok; ", response);
+      throw new Error("Failed to add task");
+    }
+  } catch (error) {
+    console.error("Error adding task: ", error);
+  }
+};
+
+export default function TaskForm({ isEditMode = false, onCloseModal }: TaskFormProps) {
   const [selectedIcon, setSelectedIcon] = useState(taskIconOptions[0].label);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | null>(null);
 
@@ -28,8 +47,22 @@ export default function TaskForm({ isEditMode = false }: TaskFormProps) {
     setValue,
   } = useForm<TaskFormValues>();
 
-  const onSubmit: SubmitHandler<TaskFormValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<TaskFormValues> = async(data) => {
+    await addNewTask({
+      name: data.taskName,
+      description: data.taskDesc,
+      icon: data.taskIcon,
+      status: data.taskStatus || "to-do",
+    });
+
+    // reset form values and close modal
+    setValue("taskName", "");
+    setValue("taskDesc", "");
+    setValue("taskIcon", "");
+    setValue("taskStatus", null);
+
+    // close modal
+    onCloseModal();
   };
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
