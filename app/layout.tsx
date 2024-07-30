@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={outfit.className}>
         {children} <div id='modal-root'></div>
+        <Toaster />
       </body>
     </html>
   );

@@ -6,9 +6,9 @@ import { Task } from "./types";
 
 const getTasks = async (): Promise<Task[]> => {
   const response = await fetch("http://localhost:3000/api/tasks", {
+    cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache',
       'method': 'GET'
     }
   }); // asegúrate de usar la URL correcta de tu API

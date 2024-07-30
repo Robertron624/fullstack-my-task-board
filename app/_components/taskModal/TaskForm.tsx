@@ -1,10 +1,12 @@
 import Image from "next/image";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
+import { getStatusStyles } from "@/app/utils";
 import { taskIconOptions, statusOptions } from "@/app/constants";
 import { Task, TaskStatus } from "@/app/types";
-import { useState } from "react";
-import { getStatusStyles } from "@/app/utils";
-
-import { useForm, SubmitHandler } from "react-hook-form";
 
 interface TaskFormProps {
   isEditMode?: boolean;
@@ -47,12 +49,21 @@ export default function TaskForm({ isEditMode = false, onCloseModal }: TaskFormP
     setValue,
   } = useForm<TaskFormValues>();
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<TaskFormValues> = async(data) => {
     await addNewTask({
       name: data.taskName,
       description: data.taskDesc,
       icon: data.taskIcon,
       status: data.taskStatus || "to-do",
+    });
+
+    // show toast message
+    toast.success("Task added successfully", {
+      duration: 3000,
+      position: "top-right",
+      icon: "🎉",
     });
 
     // reset form values and close modal
@@ -63,6 +74,9 @@ export default function TaskForm({ isEditMode = false, onCloseModal }: TaskFormP
 
     // close modal
     onCloseModal();
+
+    // refresh the page to show the new task
+    router.refresh();
   };
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {

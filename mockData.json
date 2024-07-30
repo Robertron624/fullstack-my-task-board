@@ -42,10 +42,31 @@
     "id": "xvp41kjoz"
   },
   {
-    "name": "asddasd",
-    "description": "asdasd",
-    "icon": "🚀",
+    "name": "hellooo",
+    "description": "headsasd",
+    "icon": "☕️",
+    "status": "completed",
+    "id": "7smqc1tu1"
+  },
+  {
+    "name": "comprar leche",
+    "description": "Salir a comprar al D1",
+    "icon": "☕️",
+    "status": "completed",
+    "id": "22k9fo4d7"
+  },
+  {
+    "name": "My example refreshing page",
+    "description": "refreshing the page!",
+    "icon": "💡",
     "status": "won't-do",
-    "id": "7vrr0mtlq"
+    "id": "unrk3sex7"
+  },
+  {
+    "name": "noooo",
+    "description": "asdasdasd",
+    "icon": "💬",
+    "status": "completed",
+    "id": "o2hx1jukn"
   }
 ]
