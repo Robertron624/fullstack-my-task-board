@@ -1,72 +1,77 @@
 [
   {
-    "id": "1",
-    "name": "Task 1",
-    "description": "Task 1 description",
-    "status": "in-progress",
-    "icon": "📚"
-  },
-  {
-    "id": "2",
-    "name": "Task 2",
-    "description": "Task 2 description",
-    "status": "completed",
-    "icon": "☕️"
-  },
-  {
-    "id": "3",
-    "name": "Task 3",
-    "description": "Task 3 description",
-    "status": "won't-do",
-    "icon": "❤️"
-  },
-  {
-    "id": "4",
-    "name": "Task 4",
-    "description": "Task 4 description",
-    "status": "to-do",
-    "icon": "⏰"
-  },
-  {
-    "name": "asdasd",
-    "description": "asdasd",
-    "icon": "💻",
-    "status": "completed",
-    "id": "2q6clsxz7"
-  },
-  {
-    "name": "My task example",
-    "description": "My task description example",
-    "icon": "❤️",
-    "status": "in-progress",
-    "id": "xvp41kjoz"
-  },
-  {
-    "name": "hellooo",
-    "description": "headsasd",
-    "icon": "☕️",
-    "status": "completed",
-    "id": "7smqc1tu1"
-  },
-  {
-    "name": "comprar leche",
-    "description": "Salir a comprar al D1",
-    "icon": "☕️",
-    "status": "completed",
-    "id": "22k9fo4d7"
-  },
-  {
-    "name": "My example refreshing page",
-    "description": "refreshing the page!",
-    "icon": "💡",
-    "status": "won't-do",
-    "id": "unrk3sex7"
-  },
-  {
-    "name": "noooo",
-    "description": "asdasdasd",
-    "icon": "💬",
-    "status": "completed",
-    "id": "o2hx1jukn"
+    "id": "board-1",
+    "tasks": [
+      {
+        "id": "1",
+        "name": "Task 1",
+        "description": "Task 1 description",
+        "status": "in-progress",
+        "icon": "📚"
+      },
+      {
+        "id": "2",
+        "name": "Task 2",
+        "description": "Task 2 description",
+        "status": "completed",
+        "icon": "☕️"
+      },
+      {
+        "id": "3",
+        "name": "Task 3",
+        "description": "Task 3 description",
+        "status": "won't-do",
+        "icon": "❤️"
+      },
+      {
+        "id": "4",
+        "name": "Task 4",
+        "description": "Task 4 description",
+        "status": "to-do",
+        "icon": "⏰"
+      },
+      {
+        "name": "asdasd",
+        "description": "asdasd",
+        "icon": "💻",
+        "status": "completed",
+        "id": "2q6clsxz7"
+      },
+      {
+        "name": "My task example",
+        "description": "My task description example",
+        "icon": "❤️",
+        "status": "in-progress",
+        "id": "xvp41kjoz"
+      },
+      {
+        "name": "hellooo",
+        "description": "headsasd",
+        "icon": "☕️",
+        "status": "completed",
+        "id": "7smqc1tu1"
+      },
+      {
+        "name": "comprar leche",
+        "description": "Salir a comprar al D1",
+        "icon": "☕️",
+        "status": "completed",
+        "id": "22k9fo4d7"
+      },
+      {
+        "name": "My example refreshing page",
+        "description": "refreshing the page!",
+        "icon": "💡",
+        "status": "won't-do",
+        "id": "unrk3sex7"
+      },
+      {
+        "name": "noooo",
+        "description": "asdasdasd",
+        "icon": "💬",
+        "status": "completed",
+        "id": "o2hx1jukn"
+      }
+    ]
   }
 ]

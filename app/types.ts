@@ -7,3 +7,9 @@ export interface Task {
     status: TaskStatus;
     icon?: string;
 }
+
+export interface Board {
+    id: string;
+    name?: string;
+    tasks: Task[];
+}
