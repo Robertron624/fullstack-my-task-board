@@ -72,6 +72,13 @@
         "icon": "💬",
         "status": "completed",
         "id": "o2hx1jukn"
+      },
+      {
+        "name": "new task for board",
+        "description": "New Task to test Board refactor",
+        "icon": "💻",
+        "status": "completed",
+        "id": "phmwx8ffw"
       }
     ]
   }

@@ -21,8 +21,6 @@ export default async function BoardPage(
 
   const tasks = await fetchTasks(params.boardId);
 
-  console.log("TASKS inside the component", tasks);
-
   return (
     <main className='flex min-h-screen flex-col items-center p-24 bg-very-light-gray text-slate-950 gap-5'>
       <div>
@@ -32,7 +30,7 @@ export default async function BoardPage(
             <TaskComponent key={task.id} task={task} />
           ))}
         </div>
-        <AddNewTodo />
+        <AddNewTodo boardId={params.boardId}/>
       </div>
     </main>
   );

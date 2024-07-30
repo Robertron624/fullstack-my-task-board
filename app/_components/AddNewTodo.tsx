@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Modal from "./taskModal/TaskModal";
+import TaskModal from "./taskModal/TaskModal";
 
-export default function AddNewTodo() {
+interface AddNewTodoProps {
+    boardId: string;
+}
+
+export default function AddNewTodo({ boardId }: AddNewTodoProps) {
 
     const [showForm, setShowForm] = useState(false);
 
@@ -27,7 +31,7 @@ export default function AddNewTodo() {
                 </div>
                 Add new task
             </button>
-            <Modal isOpen={showForm} onClose={() => setShowForm(false)} />
+            <TaskModal isOpen={showForm} onClose={() => setShowForm(false)} boardId={boardId}/>
         </div>
     );
         
