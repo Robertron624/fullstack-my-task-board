@@ -1,6 +1,7 @@
 [
   {
     "id": "board-1",
+    "name": "Board 1",
     "tasks": [
       {
         "id": "1",
