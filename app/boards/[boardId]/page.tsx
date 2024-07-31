@@ -27,7 +27,7 @@ export default async function BoardPage(
         <Logo />
         <div className='flex flex-col gap-6 mt-8 w-full justify-start items-start'>
           {tasks.map((task) => (
-            <TaskComponent key={task.id} task={task} />
+            <TaskComponent key={task.id} task={task} boardId={params.boardId}/>
           ))}
         </div>
         <AddNewTodo boardId={params.boardId}/>

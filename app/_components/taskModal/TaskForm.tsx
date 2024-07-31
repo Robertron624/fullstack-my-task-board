@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ interface TaskFormProps {
   isEditMode?: boolean;
   onCloseModal: () => void;
   boardId: string;
+  task?: Task;
 }
 
 interface TaskFormValues {
@@ -33,7 +34,7 @@ const addNewTask = async (data: Task, boardId: string) => {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      console.error("response not ok; ", response);
+      console.error("response not ok: ", response);
       throw new Error("Failed to add task");
     }
   } catch (error) {
@@ -41,7 +42,27 @@ const addNewTask = async (data: Task, boardId: string) => {
   }
 };
 
-export default function TaskForm({ isEditMode = false, onCloseModal, boardId }: TaskFormProps) {
+const updateTask = async (data: Task, boardId: string) => {
+  try {
+    const url = `http://localhost:3000/api/boards/${boardId}`;
+
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.error("response not ok: ", response);
+      throw new Error("Failed to update task");
+    }
+  } catch (error) {
+    console.error("Error updating task: ", error);
+  }
+};
+
+export default function TaskForm({ isEditMode = false, onCloseModal, boardId, task }: TaskFormProps) {
   const [selectedIcon, setSelectedIcon] = useState(taskIconOptions[0].label);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | null>(null);
 
@@ -52,18 +73,46 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId }: 
     setValue,
   } = useForm<TaskFormValues>();
 
+  // If the task is in edit mode, set the form values to the task values
+  useEffect(() => {
+    if (isEditMode && task) {
+      setValue("taskName", task.name);
+      setValue("taskDesc", task.description);
+      setValue("taskStatus", task.status);
+      setSelectedStatus(task.status);
+
+      if(task.icon) {
+        setValue("taskIcon", task.icon);
+        setSelectedIcon(task.icon);
+      }
+    }
+  }, [task, isEditMode, setValue]);
+
   const router = useRouter();
 
   const onSubmit: SubmitHandler<TaskFormValues> = async(data) => {
-    await addNewTask({
+
+    const dataToSubmit = {
       name: data.taskName,
       description: data.taskDesc,
       icon: data.taskIcon,
       status: data.taskStatus || "to-do",
-    }, boardId);
+    };
+
+    let toastMessage = "";
+
+    if(isEditMode) {
+      // update task
+      await updateTask(dataToSubmit, boardId);
+      toastMessage = "Task updated successfully";
+    }
+    else {
+      await addNewTask(dataToSubmit, boardId);
+      toastMessage = "Task added successfully";
+    }
 
     // show toast message
-    toast.success("Task added successfully", {
+    toast.success(toastMessage, {
       duration: 3000,
       position: "top-right",
       icon: "🎉",

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import TaskForm from "./TaskForm";
+import { Task } from "@/app/types";
 
 // Create a new portal for the new task modal
 
@@ -9,15 +10,18 @@ interface ModalProps {
   onClose: () => void;
   isEditMode?: boolean;
   boardId: string;
+  task?: Task;
 }
 
-export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId }: ModalProps) {
+export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, task }: ModalProps) {
 
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+
+  console.log(`TaskModal isOpen from TaskModal: ${isOpen}}, is it also editMode ? ${isEditMode}}`, );
 
   if (!isOpen) return null;
   return createPortal(
@@ -37,7 +41,7 @@ export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId }
             <span className='sr-only'>Close modal</span>
           </button>
         </div>
-        <TaskForm isEditMode={isEditMode} onCloseModal={onClose} boardId={boardId}/>
+        <TaskForm isEditMode={isEditMode} onCloseModal={onClose} boardId={boardId} task={task}/>
       </div>
     </div>,
     document.getElementById("modal-root")!
