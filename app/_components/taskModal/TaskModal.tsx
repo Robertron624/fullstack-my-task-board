@@ -8,9 +8,10 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   isEditMode?: boolean;
+  boardId: string;
 }
 
-export default function Modal({ isOpen, onClose, isEditMode=false }: ModalProps) {
+export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId }: ModalProps) {
 
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -36,7 +37,7 @@ export default function Modal({ isOpen, onClose, isEditMode=false }: ModalProps)
             <span className='sr-only'>Close modal</span>
           </button>
         </div>
-        <TaskForm isEditMode={isEditMode} onCloseModal={onClose}/>
+        <TaskForm isEditMode={isEditMode} onCloseModal={onClose} boardId={boardId}/>
       </div>
     </div>,
     document.getElementById("modal-root")!

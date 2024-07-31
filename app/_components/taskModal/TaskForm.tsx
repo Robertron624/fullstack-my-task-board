@@ -11,6 +11,7 @@ import { Task, TaskStatus } from "@/app/types";
 interface TaskFormProps {
   isEditMode?: boolean;
   onCloseModal: () => void;
+  boardId: string;
 }
 
 interface TaskFormValues {
@@ -20,9 +21,11 @@ interface TaskFormValues {
   taskStatus: TaskStatus | null;
 }
 
-const addNewTask = async (data: Task) => {
+const addNewTask = async (data: Task, boardId: string) => {
   try {
-    const response = await fetch("http://localhost:3000/api/tasks", {
+    const url = `http://localhost:3000/api/boards/${boardId}`;
+
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +41,7 @@ const addNewTask = async (data: Task) => {
   }
 };
 
-export default function TaskForm({ isEditMode = false, onCloseModal }: TaskFormProps) {
+export default function TaskForm({ isEditMode = false, onCloseModal, boardId }: TaskFormProps) {
   const [selectedIcon, setSelectedIcon] = useState(taskIconOptions[0].label);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | null>(null);
 
@@ -57,7 +60,7 @@ export default function TaskForm({ isEditMode = false, onCloseModal }: TaskFormP
       description: data.taskDesc,
       icon: data.taskIcon,
       status: data.taskStatus || "to-do",
-    });
+    }, boardId);
 
     // show toast message
     toast.success("Task added successfully", {

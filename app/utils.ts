@@ -1,5 +1,6 @@
+import path from "path";
 import { statusStylesObject } from "./constants";
-import { Task, TaskStatus } from "./types";
+import { Board, Task, TaskStatus } from "./types";
 
 export const getStatusStyles = (status: TaskStatus) => statusStylesObject[status];
 
@@ -21,3 +22,4 @@ export const isTask = (task: any): task is Task => {
       isStatusValid
     );
 };
+
