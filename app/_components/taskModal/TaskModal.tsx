@@ -10,7 +10,7 @@ interface ModalProps {
   onClose: () => void;
   isEditMode?: boolean;
   boardId: string;
-  task?: Task;
+  task: Task | null | undefined;
 }
 
 export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, task }: ModalProps) {
@@ -20,8 +20,6 @@ export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, 
       onClose();
     }
   };
-
-  console.log(`TaskModal isOpen from TaskModal: ${isOpen}}, is it also editMode ? ${isEditMode}}`, );
 
   if (!isOpen) return null;
   return createPortal(

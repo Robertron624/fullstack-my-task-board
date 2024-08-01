@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href={'/'} className='flex gap-4 flex-wrap'>
+    <Link href={'/'} className='flex gap-4 flex-wrap' title="Go to Home">
       <div className='shrink-0'>
         <Image src='/images/Logo.svg' alt='Logo' width={50} height={50} />
       </div>

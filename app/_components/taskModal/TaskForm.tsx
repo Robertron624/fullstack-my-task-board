@@ -12,7 +12,7 @@ interface TaskFormProps {
   isEditMode?: boolean;
   onCloseModal: () => void;
   boardId: string;
-  task?: Task;
+  task: Task | null | undefined;
 }
 
 interface TaskFormValues {
@@ -22,7 +22,7 @@ interface TaskFormValues {
   taskStatus: TaskStatus | null;
 }
 
-const addNewTask = async (data: Task, boardId: string) => {
+const addNewTask = async (data: Omit<Task, "id">, boardId: string) => {
   try {
     const url = `http://localhost:3000/api/boards/${boardId}`;
 
@@ -62,6 +62,26 @@ const updateTask = async (data: Task, boardId: string) => {
   }
 };
 
+const deleteTask = async (taskId: string, boardId: string) => {
+  try {
+    const url = `http://localhost:3000/api/boards/${boardId}`;
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: taskId }),
+    });
+    if (!response.ok) {
+      console.error("response not ok: ", response);
+      throw new Error("Failed to delete task");
+    }
+  } catch (error) {
+    console.error("Error deleting task: ", error);
+  }
+}
+
 export default function TaskForm({ isEditMode = false, onCloseModal, boardId, task }: TaskFormProps) {
   const [selectedIcon, setSelectedIcon] = useState(taskIconOptions[0].label);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | null>(null);
@@ -90,7 +110,9 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
 
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<TaskFormValues> = async(data) => {
+  const onSubmit: SubmitHandler<TaskFormValues> = async(data, event) => {
+
+    event?.preventDefault();
 
     const dataToSubmit = {
       name: data.taskName,
@@ -101,10 +123,28 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
 
     let toastMessage = "";
 
+    const target = event?.nativeEvent as SubmitEvent;
+    const submitter = target.submitter as HTMLButtonElement;
+
     if(isEditMode) {
-      // update task
-      await updateTask(dataToSubmit, boardId);
-      toastMessage = "Task updated successfully";
+      // if it's in edit mode, the task won't be falsy
+      const taskId = task?.id as string
+
+      const editDataToSubmit = {
+        ...dataToSubmit,
+        id: taskId,
+      };
+      
+      if(submitter.name === "delete") {
+        // delete task
+        await deleteTask(taskId, boardId);
+        toastMessage = "Task deleted successfully";
+      }
+      else {
+        // save task
+        await updateTask(editDataToSubmit, boardId);
+        toastMessage = "Task updated successfully";
+      }
     }
     else {
       await addNewTask(dataToSubmit, boardId);
@@ -260,8 +300,9 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
         {isEditMode ? (
           <div className='flex gap-4 justify-end items-center w-full'>
             <button
-              type='button'
-              className=' bg-medium-gray text-very-light-gray py-2 px-8 mt-4 rounded-2xl font-semibold flex gap-2 items-center'
+              type='submit'
+              name="delete"
+              className=' bg-medium-gray text-very-light-gray py-2 px-8 mt-4 rounded-2xl font-semibold flex gap-2 items-center hover:bg-red duration-300 ease-in-out'
             >
               Delete
               <Image
@@ -272,8 +313,9 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
               />
             </button>
             <button
-              type='button'
-              className=' py-2 px-8 mt-4 rounded-2xl font-bold ml-2 flex items-center gap-2 bg-blue text-very-light-gray'
+              type='submit'
+              name="save"
+              className=' py-2 px-8 mt-4 rounded-2xl font-bold ml-2 flex items-center gap-2 bg-blue text-very-light-gray hover:bg-dark-blue duration-300 ease-in-out'
             >
               Save
               <Image

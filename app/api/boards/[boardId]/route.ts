@@ -83,12 +83,15 @@ export async function DELETE(
 export async function PUT(req: NextRequest, { params }: { params: { boardId: string } }) {
   try {
     const updatedTask: Task = await req.json();
+
     if (!isTask(updatedTask)) {
       throw new Error("Invalid task data");
     }
 
     const boards: Board[] = readData();
     const board = boards.find((b) => b.id === params.boardId);
+
+    
 
     if (!board) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
