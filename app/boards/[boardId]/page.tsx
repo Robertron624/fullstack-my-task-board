@@ -1,12 +1,15 @@
 
 import type { Task } from "@/app/types";
-import TaskComponent from "@/app/_components/TaskComponent";
 import AddNewTodo from "@/app/_components/AddNewTodo";
 import Logo from "@/app/_components/Logo";
 import TaskList from "@/app/_components/TaskList";
+import { API_URL } from "@/app/config/config";
 
 const fetchTasks = async (boardId: string): Promise<Task[]> => {
-  const response = await fetch(`http://localhost:3000/api/boards/${boardId}`, { cache: 'no-store' });
+
+  const url = `${API_URL}boards/${boardId}`;
+
+  const response = await fetch(url, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error("Failed to fetch tasks");
   }
