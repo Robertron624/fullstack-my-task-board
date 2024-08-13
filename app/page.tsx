@@ -26,16 +26,21 @@ export default async function Home() {
         <Logo />
         {boards.length > 0 ? (
           <div className='flex flex-col gap-6 mt-8 w-full justify-start items-start'>
-            {boards.map((board) => (
-              <div key={board.id} className='w-full flex justify-between'>
-                <h2 className='text-2xl font-semibold'>{board.name}</h2>
-                <Link href={`/boards/${board.id}`}>
-                  <span className='text-xl hover:underline text-blue focus:outline-none duration-300'>
-                    Go to board
-                  </span>
-                </Link>
-              </div>
-            ))}
+            {boards.map((board) => {
+
+              console.log("board received: ", board);
+
+              return (
+                <div key={board._id} className='w-full flex justify-between'>
+                  <h2 className='text-2xl font-semibold'>{board.name}</h2>
+                  <Link href={`/boards/${board._id}`}>
+                    <span className='text-xl hover:underline text-blue focus:outline-none duration-300'>
+                      Go to board
+                    </span>
+                  </Link>
+                </div>
+              )
+            })}
           </div>
         ) : (
           <div className="flex justify-center flex-col items-center border border-blue mt-6 rounded-md px-4 py-3">

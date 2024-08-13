@@ -9,7 +9,7 @@ export interface Task {
 }
 
 export interface Board {
-    id: string;
+    _id: string;
     name?: string;
     tasks: Task[];
 }

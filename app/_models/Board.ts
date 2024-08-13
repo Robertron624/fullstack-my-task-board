@@ -19,14 +19,5 @@ const BoardSchema: Schema = new Schema({
   tasks: { type: [TaskSchema], default: [] },
 });
 
-// BoardSchema.set("toJSON", {
-//   virtuals: true,
-//   versionKey: false,
-//   transform: function (doc, ret) {
-//     ret.id = ret._id;
-//     delete ret._id;
-//   },
-// });
-
 
 export default mongoose.models.Board || mongoose.model<IBoard>("Board", BoardSchema);
