@@ -9,7 +9,7 @@ export interface Task {
 }
 
 export interface IBoard extends Document {
-  name?: string;
+  name: string;
   tasks: Task[];
 }
 

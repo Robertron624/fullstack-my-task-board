@@ -22,7 +22,7 @@ interface TaskFormValues {
   taskStatus: TaskStatus | null;
 }
 
-const addNewTask = async (data: Omit<Task, "id">, boardId: string) => {
+const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
   try {
     const url = `http://localhost:3000/api/boards/${boardId}`;
 
@@ -79,6 +79,7 @@ const deleteTask = async (taskId: string, boardId: string) => {
     }
   } catch (error) {
     console.error("Error deleting task: ", error);
+    return error;
   }
 }
 
@@ -92,6 +93,13 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
     formState: { errors },
     setValue,
   } = useForm<TaskFormValues>();
+
+  const resetForm = () => {
+    setValue("taskName", "");
+    setValue("taskDesc", "");
+    setValue("taskIcon", "");
+    setValue("taskStatus", null);
+  }
 
   // If the task is in edit mode, set the form values to the task values
   useEffect(() => {
@@ -121,6 +129,7 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       status: data.taskStatus || "to-do",
     };
 
+    let isToastSuccess = false;
     let toastMessage = "";
 
     const target = event?.nativeEvent as SubmitEvent;
@@ -128,30 +137,55 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
 
     if(isEditMode) {
       // if it's in edit mode, the task won't be falsy
-      const taskId = task?.id as string
+      const taskId = task?._id as string
 
       const editDataToSubmit = {
         ...dataToSubmit,
-        id: taskId,
+        _id: taskId,
       };
       
       if(submitter.name === "delete") {
-        // delete task
-        await deleteTask(taskId, boardId);
-        toastMessage = "Task deleted successfully";
+        try {
+          
+          await deleteTask(taskId, boardId);
+          toastMessage = "Task deleted successfully";
+          isToastSuccess = true;
+        } catch (error) {
+          console.error("Error deleting task: ", error);
+          toastMessage = "Failed to delete task";
+        }
       }
       else {
-        // save task
-        await updateTask(editDataToSubmit, boardId);
-        toastMessage = "Task updated successfully";
+        try{
+          await updateTask(editDataToSubmit, boardId);
+          toastMessage = "Task updated successfully";
+          isToastSuccess = true;
+        } catch (error) {
+          console.error("Error updating task: ", error);
+          toastMessage = "Failed to update task";
+        }
       }
     }
     else {
-      await addNewTask(dataToSubmit, boardId);
-      toastMessage = "Task added successfully";
+      try {
+        await addNewTask(dataToSubmit, boardId);
+        toastMessage = "Task added successfully";
+        isToastSuccess = true;
+      } catch (error) {
+        console.error("Error adding task: ", error);
+        toastMessage = "Failed to add task";
+      }
     }
 
-    // show toast message
+    if(!isToastSuccess) {
+      toast.error(toastMessage, {
+        duration: 3000,
+        position: "top-right",
+        icon: "❌",
+      });
+      return;
+    }
+    
     toast.success(toastMessage, {
       duration: 3000,
       position: "top-right",
@@ -159,10 +193,7 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
     });
 
     // reset form values and close modal
-    setValue("taskName", "");
-    setValue("taskDesc", "");
-    setValue("taskIcon", "");
-    setValue("taskStatus", null);
+    resetForm();
 
     // close modal
     onCloseModal();

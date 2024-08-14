@@ -10,7 +10,7 @@ interface ModalProps {
   onClose: () => void;
   isEditMode?: boolean;
   boardId: string;
-  task: Task | null | undefined;
+  task?: Task | null | undefined;
 }
 
 export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, task }: ModalProps) {

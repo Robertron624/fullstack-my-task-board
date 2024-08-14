@@ -29,7 +29,7 @@ export default function TaskList({ tasks, boardId }: TaskListProps) {
     <>
       <div className='flex flex-col gap-6 mt-8 w-full justify-start items-start'>
         {tasks.map((task) => (
-          <TaskComponent key={task.id} task={task} onClick={() => handleTaskClick(task)} />
+          <TaskComponent key={task._id} task={task} onClick={() => handleTaskClick(task)} />
         ))}
       </div>
         <TaskModal isOpen={showUpdateForm} onClose={handleOnClose} boardId={boardId} isEditMode={true} task={selectedTask}/>
