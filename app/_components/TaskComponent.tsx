@@ -13,7 +13,7 @@ export default function TaskComponent({
 
   return (
     <button
-      className={`cursor-pointer max-w-4xl w-full flex justify-between gap-4 p-4 rounded-lg shadow-md ${color}`}
+      className={`cursor-pointer max-w-4xl w-full flex justify-between gap-4 p-4 rounded-lg shadow-md ${color} duration-300 hover:scale-105`}
       onClick={onClick}
     >
       <div className='flex gap-4 items-center'>

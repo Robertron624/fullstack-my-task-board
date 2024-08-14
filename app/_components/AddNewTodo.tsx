@@ -18,7 +18,7 @@ export default function AddNewTodo({ boardId }: AddNewTodoProps) {
 
     return (
         <div className="mt-6 ">
-            <button className="w-full bg-light-yellow py-6 px-6 rounded-2xl text-start font-bold flex gap-3 items-center"
+            <button className="w-full bg-light-yellow hover:bg-yellow-500 duration-300 py-6 px-6 rounded-2xl text-start font-bold flex gap-3 items-center"
                 onClick={handleButtonClick}
             >
                 <div className="bg-orange rounded-2xl w-12 h-12 flex justify-center items-center">

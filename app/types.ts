@@ -1,7 +1,7 @@
 export type TaskStatus = "in-progress" | "completed" | "won't-do" | "to-do";
 
 export interface Task {
-    id: string;
+    _id: string;
     name: string;
     description: string;
     status: TaskStatus;
@@ -9,7 +9,7 @@ export interface Task {
 }
 
 export interface Board {
-    id: string;
+    _id: string;
     name?: string;
     tasks: Task[];
 }
