@@ -27,9 +27,6 @@ export default async function Home() {
         {boards.length > 0 ? (
           <div className='flex flex-col gap-6 mt-8 w-full justify-start items-start'>
             {boards.map((board) => {
-
-              console.log("board received: ", board);
-
               return (
                 <div key={board._id} className='w-full flex justify-between'>
                   <h2 className='text-2xl font-semibold'>{board.name}</h2>

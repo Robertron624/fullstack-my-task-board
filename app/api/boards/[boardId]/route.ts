@@ -23,7 +23,8 @@ export async function GET(
     return NextResponse.json(board);
   }catch(error: any){
     console.error("Error getting boards: ", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const customErrorMessage = "An error ocurred while getting the board data.";
+    return NextResponse.json({ error: customErrorMessage}, { status: 500 });
   }
 
 }
@@ -36,8 +37,6 @@ export async function POST(
     await connectToMongoDB();
 
     const newTask = await req.json();
-
-    console.log("newTask received in POST: ", newTask);
 
     if (!isTask(newTask)) {
       throw new Error("Invalid task data");
@@ -61,7 +60,8 @@ export async function POST(
 
   } catch (error: any) {
     console.error("Error adding task: ", error);
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    const customErrorMessage = "An error ocurred while adding the task.";
+    return NextResponse.json({ error: customErrorMessage }, { status: 400 });
   }
 }
 
@@ -94,7 +94,9 @@ export async function DELETE(
     return NextResponse.json({ message: "Task deleted successfully", success: true });
 
   } catch (error: any) {
-    return NextResponse.json({ error: error.message, success: false }, { status: 400 });
+    console.error("Error deleting task: ", error);
+    const customErrorMessage = "An error ocurred while deleting the task.";
+    return NextResponse.json({ error: customErrorMessage, success: false }, { status: 400 });
   }
 }
 
@@ -127,6 +129,8 @@ export async function PUT(req: NextRequest, { params }: { params: { boardId: str
     return NextResponse.json({ message: "Task updated successfully", success: true });
 
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    console.error("Error updating task: ", error);
+    const customErrorMessage = "An error ocurred while updating the task.";
+    return NextResponse.json({ error: customErrorMessage }, { status: 400 });
   }
 }
