@@ -1,12 +1,12 @@
-import type { Task } from "@/app/types";
+import type { Board, Task } from "@/app/types";
 import AddNewTodo from "@/app/_components/AddNewTodo";
-import Logo from "@/app/_components/Logo";
 import TaskList from "@/app/_components/TaskList";
 import { API_URL } from "@/app/config/config";
 
 import { notFound } from "next/navigation";
+import BoardHeader from "@/app/_components/BoardHeader";
 
-const fetchTasks = async (boardId: string): Promise<Task[]> => {
+const fetchTasks = async (boardId: string): Promise<Board> => {
   const url = `${API_URL}boards/${boardId}`;
 
   const response = await fetch(url, { cache: "no-store" });
@@ -21,7 +21,7 @@ const fetchTasks = async (boardId: string): Promise<Task[]> => {
 
   const responseData = await response.json();
 
-  return responseData.tasks;
+  return responseData;
 };
 
 export default async function BoardPage({
@@ -29,12 +29,15 @@ export default async function BoardPage({
 }: {
   params: { boardId: string };
 }) {
-  const tasks = await fetchTasks(params.boardId);
+
+  const boardData = await fetchTasks(params.boardId);
+
+  const { name, tasks, description } = boardData;
 
   return (
     <main className='flex min-h-screen flex-col items-center p-24 bg-very-light-gray text-slate-950 gap-5'>
       <div>
-        <Logo />
+        <BoardHeader name={name} description={description} />
         {tasks.length === 0 ? (
           <div className="my-4 text-center">
             <p className="text-2xl font-bold">No tasks found!</p>

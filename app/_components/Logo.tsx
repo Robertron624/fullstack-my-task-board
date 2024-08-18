@@ -10,15 +10,13 @@ export default function Logo() {
       <div>
         <div className='flex flex-col gap-4'>
           <div className='flex items-center gap-4'>
-            <h1 className='text-6xl font-semibold'>My Task Board</h1>
-            <Image
-              src='/images/Edit_duotone.svg'
-              alt='Pencil'
-              width={35}
-              height={35}
-            />
+            <h1 className='text-6xl font-semibold'>
+              Task-Board!
+            </h1>
           </div>
-          <p className='text-xl'>Tasks to keep organized</p>
+          <p className='text-xl'>
+            A simple task board to keep track of your tasks!
+          </p>
         </div>
       </div>
     </Link>

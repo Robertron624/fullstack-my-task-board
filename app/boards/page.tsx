@@ -11,6 +11,12 @@ export default function BoardsPage() {
     const createBoardAndRedirect = async () => {
       try {
 
+        // Check if we're already creating a board to avoid creating multiple boards
+        if(localStorage.getItem("creatingBoard")) {
+          return;
+        }
+        localStorage.setItem("creatingBoard", "true");
+
         const existingBoardId = localStorage.getItem("boardId");
 
         if (existingBoardId) {
@@ -62,6 +68,8 @@ export default function BoardsPage() {
       } catch (error) {
         console.error("Error creating board: ", error);
         setError("An error occurred. Please try again later.");
+      } finally {
+        localStorage.removeItem("creatingBoard");
       }
     };
 

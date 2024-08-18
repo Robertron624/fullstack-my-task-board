@@ -11,12 +11,15 @@ export interface Task {
 export interface IBoard extends Document {
   name: string;
   tasks: Task[];
+  // Adding an optional description field
+  description?: string;
 }
 
 
 const BoardSchema: Schema = new Schema({
   name: { type: String },
   tasks: { type: [TaskSchema], default: [] },
+  description: { type: String, default: "" },
 });
 
 
