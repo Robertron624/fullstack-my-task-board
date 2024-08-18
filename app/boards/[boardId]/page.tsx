@@ -4,7 +4,7 @@ import TaskList from "@/app/_components/TaskList";
 import { API_URL } from "@/app/config/config";
 
 import { notFound } from "next/navigation";
-import BoardHeader from "@/app/_components/BoardHeader";
+import BoardHeader from "@/app/_components/boardHeader/BoardHeader";
 
 const fetchTasks = async (boardId: string): Promise<Board> => {
   const url = `${API_URL}boards/${boardId}`;
@@ -32,12 +32,12 @@ export default async function BoardPage({
 
   const boardData = await fetchTasks(params.boardId);
 
-  const { name, tasks, description } = boardData;
+  const { _id, name, tasks, description } = boardData;
 
   return (
     <main className='flex min-h-screen flex-col items-center p-24 bg-very-light-gray text-slate-950 gap-5'>
       <div>
-        <BoardHeader name={name} description={description} />
+        <BoardHeader name={name} description={description} boardId={_id} />
         {tasks.length === 0 ? (
           <div className="my-4 text-center">
             <p className="text-2xl font-bold">No tasks found!</p>

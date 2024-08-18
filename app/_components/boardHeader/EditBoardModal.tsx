@@ -1,19 +1,16 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import TaskForm from "./TaskForm";
-import { Task } from "@/app/types";
+import EditBoardForm from "./EditBoardForm";
 
 // Create a new portal for the new task modal
 
-interface ModalProps {
+interface EditBoardModalProps {
   isOpen: boolean;
   onClose: () => void;
-  isEditMode?: boolean;
-  boardId: string;
-  task?: Task | null | undefined;
+  boardData: { name: string; description?: string; _id: string };
 }
 
-export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, task }: ModalProps) {
+export default function EditBoardModal({ isOpen, onClose, boardData }: EditBoardModalProps) {
 
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -28,7 +25,9 @@ export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, 
     >
       <div className='bg-white p-6 rounded-lg text-slate-900 w-full max-w-2xl'>
         <div className='flex justify-between'>
-          <h2 className='text-2xl font-bold'>Add new task</h2>
+          <h2 className='text-2xl font-bold'>
+            Edit board
+          </h2>
           <button onClick={onClose} className='py-2 px-3 border border-light-gray rounded-lg' title="Close modal">
             <Image
               src='/images/close_ring_duotone-1.svg'
@@ -39,7 +38,7 @@ export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, 
             <span className='sr-only'>Close modal</span>
           </button>
         </div>
-        <TaskForm isEditMode={isEditMode} onCloseModal={onClose} boardId={boardId} task={task}/>
+        <EditBoardForm onCloseModal={onClose} boardData={boardData}/>
       </div>
     </div>,
     document.getElementById("modal-root")!

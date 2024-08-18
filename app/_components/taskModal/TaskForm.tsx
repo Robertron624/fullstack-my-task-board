@@ -8,6 +8,8 @@ import { getStatusStyles } from "@/app/utils";
 import { taskIconOptions, statusOptions } from "@/app/constants";
 import { Task, TaskStatus } from "@/app/types";
 
+import { API_URL } from "@/app/config/config";
+
 interface TaskFormProps {
   isEditMode?: boolean;
   onCloseModal: () => void;
@@ -24,7 +26,7 @@ interface TaskFormValues {
 
 const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
   try {
-    const url = `http://localhost:3000/api/boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}`;
 
     const response = await fetch(url, {
       method: "POST",
@@ -44,7 +46,7 @@ const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
 
 const updateTask = async (data: Task, boardId: string) => {
   try {
-    const url = `http://localhost:3000/api/boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}`;
 
     const response = await fetch(url, {
       method: "PUT",
@@ -64,7 +66,7 @@ const updateTask = async (data: Task, boardId: string) => {
 
 const deleteTask = async (taskId: string, boardId: string) => {
   try {
-    const url = `http://localhost:3000/api/boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}`;
 
     const response = await fetch(url, {
       method: "DELETE",
