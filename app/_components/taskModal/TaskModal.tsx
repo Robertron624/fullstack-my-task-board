@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
+import { useEffect } from "react";
+
 import TaskForm from "./TaskForm";
 import { Task } from "@/app/types";
 
@@ -20,6 +22,26 @@ export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, 
       onClose();
     }
   };
+
+  // Close modal when pressing the escape key
+  useEffect(() => {
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
   return createPortal(

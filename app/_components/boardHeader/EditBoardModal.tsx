@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import EditBoardForm from "./EditBoardForm";
+import { useEffect } from "react";
 
 // Create a new portal for the new task modal
 
@@ -17,6 +18,27 @@ export default function EditBoardModal({ isOpen, onClose, boardData }: EditBoard
       onClose();
     }
   };
+
+
+  // Close modal when pressing the escape key
+  useEffect(() => {
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
   return createPortal(
