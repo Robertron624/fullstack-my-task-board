@@ -83,8 +83,8 @@ export async function PUT(req: NextRequest, { params }: { params: { boardId: str
     });
 
   } catch (error: any) {
-    console.error("Error updating task: ", error);
-    const customErrorMessage = "An error ocurred while updating the task.";
+    console.error("Error updating board: ", error);
+    const customErrorMessage = "An error ocurred while updating the board.";
     return NextResponse.json({ error: customErrorMessage }, { status: 400 });
   }
 }

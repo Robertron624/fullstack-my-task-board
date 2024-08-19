@@ -26,6 +26,7 @@ const config: Config = {
         'medium-gray': '#97A3B6',
         'blue': '#3662E3',
         'dark-blue': '#1E3A8A',
+        'darker-blue': '#030616',
         'semi-transparent-black': '#00000033'
       }
     },

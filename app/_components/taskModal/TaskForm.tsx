@@ -26,7 +26,7 @@ interface TaskFormValues {
 
 const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
   try {
-    const url = `${API_URL}boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}/tasks`;
 
     const response = await fetch(url, {
       method: "POST",
@@ -46,7 +46,10 @@ const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
 
 const updateTask = async (data: Task, boardId: string) => {
   try {
-    const url = `${API_URL}boards/${boardId}`;
+
+    const taskId = data._id as string;
+
+    const url = `${API_URL}boards/${boardId}/tasks/${taskId}`;
 
     const response = await fetch(url, {
       method: "PUT",
@@ -55,6 +58,7 @@ const updateTask = async (data: Task, boardId: string) => {
       },
       body: JSON.stringify(data),
     });
+
     if (!response.ok) {
       console.error("response not ok: ", response);
       throw new Error("Failed to update task");
@@ -66,7 +70,7 @@ const updateTask = async (data: Task, boardId: string) => {
 
 const deleteTask = async (taskId: string, boardId: string) => {
   try {
-    const url = `${API_URL}boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}/tasks/${taskId}`;
 
     const response = await fetch(url, {
       method: "DELETE",

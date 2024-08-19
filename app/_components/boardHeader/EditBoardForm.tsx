@@ -39,7 +39,7 @@ interface EditBoardFormValues {
 interface EditBoardFormProps {
     onCloseModal: () => void;
     boardData: { name: string; description?: string; _id: string };
-    }
+}
 
 export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFormProps) {
 
@@ -60,6 +60,7 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
             router.refresh();
         }
         catch (error: any) {
+            console.error('Error updating board: ', error);
             toast.error('Failed to update board');
         }
     }
