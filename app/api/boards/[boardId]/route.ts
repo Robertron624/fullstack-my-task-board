@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { Board as BoardType, Task as TaskType } from "@/app/types";
-import { isTask } from "@/app/utils";
-import { readData, writeData } from "@/app/api/apiUtils";
+import { isBoard, isTask } from "@/app/utils";
 
 import connectToMongoDB from "@/app/config/mongoose";
 import Board from "@/app/_models/Board";
 
+// GET an individual Board data
 export async function GET(
   req: NextRequest,
   { params }: { params: { boardId: string } }
@@ -29,42 +29,7 @@ export async function GET(
 
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { boardId: string } }
-) {
-  try {
-    await connectToMongoDB();
-
-    const newTask = await req.json();
-
-    if (!isTask(newTask)) {
-      throw new Error("Invalid task data");
-    }
-
-    const board = await Board.findById(params.boardId).exec();
-
-    if (!board) {
-      return NextResponse.json({ error: "Board not found", success: false }, { status: 404 });
-    }
-
-    board.tasks.push(newTask);
-
-    await board.save();
-
-    return NextResponse.json({
-      success: true,
-      message: "Task added successfully",
-      newTask,
-    }, { status: 201 });
-
-  } catch (error: any) {
-    console.error("Error adding task: ", error);
-    const customErrorMessage = "An error ocurred while adding the task.";
-    return NextResponse.json({ error: customErrorMessage }, { status: 400 });
-  }
-}
-
+// DELETE an individual Board
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { boardId: string } }
@@ -73,41 +38,32 @@ export async function DELETE(
 
     await connectToMongoDB();
 
-    const { id: taskId } = await req.json();
-
     const board = await Board.findById(params.boardId).exec();
 
     if (!board) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
 
-    const taskIndex = board.tasks.findIndex((task: TaskType) => task._id.toString() === taskId);
+    await board.delete();
 
-    if (taskIndex === -1) {
-      return NextResponse.json({ error: "Task not found" }, { status: 404 });
-    }
-
-    board.tasks.splice(taskIndex, 1);
-
-    await board.save();
-
-    return NextResponse.json({ message: "Task deleted successfully", success: true });
+    return NextResponse.json({ message: "Board deleted successfully", success: true });
 
   } catch (error: any) {
-    console.error("Error deleting task: ", error);
-    const customErrorMessage = "An error ocurred while deleting the task.";
+    console.error("Error deleting Board: ", error);
+    const customErrorMessage = "An error ocurred while deleting the Board.";
     return NextResponse.json({ error: customErrorMessage, success: false }, { status: 400 });
   }
 }
 
+// PUT an individual Board
 export async function PUT(req: NextRequest, { params }: { params: { boardId: string } }) {
   try {
     await connectToMongoDB();
 
-    const updatedTask = await req.json();
+    const updatedBoard = await req.json();
 
-    if (!isTask(updatedTask)) {
-      throw new Error("Invalid task data");
+    if (!isBoard(updatedBoard)) {
+      throw new Error("Invalid board data");
     }
 
     const board = await Board.findById(params.boardId).exec();
@@ -116,17 +72,15 @@ export async function PUT(req: NextRequest, { params }: { params: { boardId: str
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
 
-    const taskIndex = board.tasks.findIndex((task: TaskType) => task._id.toString() === updatedTask._id);
-
-    if (taskIndex === -1) {
-      return NextResponse.json({ error: "Task not found" }, { status: 404 });
-    }
-
-    board.tasks[taskIndex] = updatedTask;
+    board.set(updatedBoard);
 
     await board.save();
 
-    return NextResponse.json({ message: "Task updated successfully", success: true });
+    return NextResponse.json({
+      success: true,
+      message: "Board updated successfully",
+      updatedBoard,
+    });
 
   } catch (error: any) {
     console.error("Error updating task: ", error);

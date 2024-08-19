@@ -23,3 +23,8 @@ export const isTask = (task: any): task is Task => {
     );
 };
 
+export const isBoard = (board: any): board is Board => {
+    const isNameValid = typeof board.name === 'string';
+    const isTasksValid = Array.isArray(board.tasks) && board.tasks.every(isTask);
+    return isNameValid && isTasksValid;
+}
