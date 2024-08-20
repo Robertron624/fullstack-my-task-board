@@ -5,9 +5,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import { getStatusStyles } from "@/app/utils";
-import { taskIconOptions, statusOptions } from "@/app/constants";
+import { taskIconOptions, statusOptions, TASK_NAME_MIN_LENGTH, TASK_DESCRIPTION_MIN_LENGTH } from "@/app/constants";
 import { Task, TaskStatus } from "@/app/types";
 
+import { TASK_NAME_MAX_LENGTH, TASK_DESCRIPTION_MAX_LENGTH } from "@/app/constants";
 import { API_URL } from "@/app/config/config";
 
 interface TaskFormProps {
@@ -128,11 +129,13 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
 
     event?.preventDefault();
 
+    const { taskName, taskDesc, taskIcon, taskStatus } = data;
+
     const dataToSubmit = {
-      name: data.taskName,
-      description: data.taskDesc,
-      icon: data.taskIcon,
-      status: data.taskStatus || "to-do",
+      name: taskName,
+      description: taskDesc,
+      icon: taskIcon,
+      status: taskStatus || "to-do",
     };
 
     let isToastSuccess = false;
@@ -235,8 +238,8 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
         placeholder='Enter task name'
         {...register("taskName", {
           required: true,
-          maxLength: { value: 80, message: "Task name is too long" },
-          minLength: { value: 3, message: "Task name is too short" },
+          maxLength: { value: TASK_NAME_MAX_LENGTH, message: "Task name is too long" },
+          minLength: { value: TASK_NAME_MIN_LENGTH, message: "Task name is too short" },
         })}
       />
         {errors.taskName && (
@@ -257,8 +260,8 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
         rows={6}
         {...register("taskDesc", {
           required: true,
-          maxLength: { value: 200, message: "Description is too long" },
-          minLength: { value: 3, message: "Description is too short" },
+          maxLength: { value: TASK_DESCRIPTION_MAX_LENGTH, message: "Description is too long" },
+          minLength: { value: TASK_DESCRIPTION_MIN_LENGTH, message: "Description is too short" },
         })}
       ></textarea>
       {errors.taskDesc && (

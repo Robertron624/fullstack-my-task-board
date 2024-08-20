@@ -3,6 +3,8 @@ import connectToMongoDB from "@/app/config/mongoose";
 import Board from "@/app/_models/Board";
 import { isBoard } from "@/app/utils";
 
+import { BOARD_NAME_MAX_LENGTH, BOARD_DESCRIPTION_MAX_LENGTH } from "@/app/constants";
+
 // GET all boards
 export async function GET(req: NextRequest) {
     try {
@@ -28,6 +30,14 @@ export async function POST(req: NextRequest) {
 
     if (!isBoard(newBoard)) {
       return NextResponse.json({ error: "Invalid board data", success: false }, { status: 400 });
+    }
+
+    if (newBoard.name.length > BOARD_NAME_MAX_LENGTH) {
+      return NextResponse.json({ error: `Board name must be less than ${BOARD_NAME_MAX_LENGTH} characters`, success: false }, { status: 400 });
+    }
+
+    if (newBoard.description && newBoard.description.length > BOARD_DESCRIPTION_MAX_LENGTH) {
+      return NextResponse.json({ error: `Board description must be less than ${BOARD_DESCRIPTION_MAX_LENGTH} characters`, success: false }, { status: 400 });
     }
 
     const board = new Board(newBoard);

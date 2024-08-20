@@ -4,6 +4,7 @@ import { isTask } from "@/app/utils";
 
 import connectToMongoDB from "@/app/config/mongoose";
 import Board from "@/app/_models/Board";
+import { TASK_NAME_MAX_LENGTH, TASK_DESCRIPTION_MAX_LENGTH } from "@/app/constants";
 
 
 // GET an individual Task from a Board
@@ -50,6 +51,14 @@ export async function PUT(
 
     if (!isTask(updatedTask)) {
       throw new Error("Invalid task data");
+    }
+
+    if (updatedTask.name.length > TASK_NAME_MAX_LENGTH) {
+      return NextResponse.json({ error: `Task name must be less than ${TASK_NAME_MAX_LENGTH} characters`, success: false }, { status: 400 });
+    }
+
+    if (updatedTask.description && updatedTask.description.length > TASK_DESCRIPTION_MAX_LENGTH) {
+      return NextResponse.json({ error: `Task description must be less than ${TASK_DESCRIPTION_MAX_LENGTH} characters`, success: false }, { status: 400 });
     }
 
     const board = await Board.findById(boardId).exec();

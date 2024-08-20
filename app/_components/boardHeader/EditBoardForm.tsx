@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+import { BOARD_NAME_MAX_LENGTH, BOARD_NAME_MIN_LENGTH, BOARD_DESCRIPTION_MAX_LENGTH, BOARD_DESCRIPTION_MIN_LENGTH } from '@/app/constants';
 import { API_URL } from '@/app/config/config';
 
 const updateBoard = async (boardId: string, data: EditBoardFormValues) => {
@@ -30,7 +31,6 @@ const updateBoard = async (boardId: string, data: EditBoardFormValues) => {
     }
 };
 
-
 interface EditBoardFormValues {
     name: string;
     description?: string;
@@ -45,7 +45,7 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
 
     const router = useRouter();
 
-    const { register, handleSubmit } = useForm<EditBoardFormValues>({
+    const { register, handleSubmit, formState: {errors} } = useForm<EditBoardFormValues>({
         defaultValues: {
             name: boardData.name,
             description: boardData.description,
@@ -74,16 +74,37 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
                         type='text'
                         id='name'
                         className='p-2 border border-light-gray rounded-lg'
-                        {...register('name')}
+                        {...register('name', {
+                            required: 'Board name is required',
+                            minLength: {
+                                value: BOARD_NAME_MIN_LENGTH,
+                                message: `Board name must be at least ${BOARD_NAME_MIN_LENGTH} characters long`,
+                            },
+                            maxLength: {
+                                value: BOARD_NAME_MAX_LENGTH,
+                                message: `Board name must be at most ${BOARD_NAME_MAX_LENGTH} characters long`,
+                            },
+                        })}
                     />
+                    {errors.name && <p className='text-red'>{errors.name.message}</p>}
                 </div>
                 <div className='flex flex-col gap-2'>
                     <label htmlFor='description' className='text-lg'>Board description</label>
                     <textarea
                         id='description'
                         className='p-2 border border-light-gray rounded-lg'
-                        {...register('description')}
+                        {...register('description', {
+                            maxLength: {
+                                value: BOARD_DESCRIPTION_MAX_LENGTH,
+                                message: `Board description must be at most ${BOARD_DESCRIPTION_MAX_LENGTH} characters long`,
+                            },
+                            minLength: {
+                                value: BOARD_DESCRIPTION_MIN_LENGTH,
+                                message: `Board description must be at least ${BOARD_DESCRIPTION_MIN_LENGTH} characters long`,
+                            },
+                        })}
                     />
+                    {errors.description && <p className='text-red'>{errors.description.message}</p>}
                 </div>
                 <div className='flex justify-end gap-4'>
                     <button
