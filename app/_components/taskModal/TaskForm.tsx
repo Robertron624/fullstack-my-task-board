@@ -273,7 +273,7 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       )}
       <div className='mt-6'>
         <p className='mb-2 text-medium-gray text-sm'>Icon</p>
-        <div className='flex gap-3'>
+        <div className='flex gap-3 flex-wrap'>
           {/* each of the task icon options is a radio button */}
           {taskIconOptions.map((option) => {
             return (
