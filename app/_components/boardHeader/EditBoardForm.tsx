@@ -73,7 +73,9 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
                     <input
                         type='text'
                         id='name'
-                        className='p-2 border border-light-gray rounded-lg'
+                        className={`p-2 border border-light-gray rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:border-none ${
+                            errors.name ? 'focus:visible:outline-red' : 'focus-visible:outline-blue'
+                        }`}
                         {...register('name', {
                             required: 'Board name is required',
                             minLength: {
@@ -92,7 +94,9 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
                     <label htmlFor='description' className='text-lg'>Board description</label>
                     <textarea
                         id='description'
-                        className='p-2 border border-light-gray rounded-lg'
+                        className={`p-2 border border-light-gray rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:border-none ${
+                            errors.description ? 'focus:visible:outline-red' : 'focus-visible:outline-blue'
+                        }`}
                         {...register('description', {
                             maxLength: {
                                 value: BOARD_DESCRIPTION_MAX_LENGTH,

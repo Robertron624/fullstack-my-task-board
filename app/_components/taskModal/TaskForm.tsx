@@ -5,10 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import { getStatusStyles } from "@/app/utils";
-import { taskIconOptions, statusOptions, TASK_NAME_MIN_LENGTH, TASK_DESCRIPTION_MIN_LENGTH } from "@/app/constants";
+import { taskIconOptions, statusOptions, TASK_NAME_MIN_LENGTH, TASK_DESCRIPTION_MIN_LENGTH, TASK_NAME_MAX_LENGTH, TASK_DESCRIPTION_MAX_LENGTH  } from "@/app/constants";
 import { Task, TaskStatus } from "@/app/types";
-
-import { TASK_NAME_MAX_LENGTH, TASK_DESCRIPTION_MAX_LENGTH } from "@/app/constants";
 import { API_URL } from "@/app/config/config";
 
 interface TaskFormProps {
@@ -234,7 +232,9 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       <input
         type='text'
         id='task-name'
-        className='w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue focus:border-blue focus:border-0 focus:border-none'
+        className={`w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus-visible:outline-2 focus-visible:outline focus-visible:border-0 focus-visible:border-none ${
+          errors.taskName ? "focus-visible:outline-red" : "focus-visible:outline-blue"
+        }`}
         placeholder='Enter task name'
         {...register("taskName", {
           required: true,
@@ -255,7 +255,9 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       </label>
       <textarea
         id='task-desc'
-        className='w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue focus:border-blue focus:border-0 focus:border-none'
+        className={`w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus-visible:outline-2 focus-visible:outline focus-visible:border-0 focus-visible:border-none ${
+          errors.taskDesc ? "focus-visible:outline-red" : "focus-visible:outline-blue"
+        }`}
         placeholder='Enter a short description'
         rows={6}
         {...register("taskDesc", {

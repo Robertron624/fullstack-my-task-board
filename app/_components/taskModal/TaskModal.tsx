@@ -45,7 +45,7 @@ export default function TaskModal({ isOpen, onClose, isEditMode=false, boardId, 
 
   if (!isOpen) return null;
   return createPortal(
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'
+    <div className='fixed overflow-y-scroll inset-0 bg-black bg-opacity-50 flex justify-center items-center'
       onClick={handleClickOutside}
     >
       <div className='bg-white p-6 rounded-lg text-slate-900 w-full max-w-2xl'>
