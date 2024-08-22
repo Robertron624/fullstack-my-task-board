@@ -82,3 +82,15 @@ export const statusStylesObject = {
       wrapperIcon: null
     },
   };
+
+
+// List of constants for Board and Task properties that are used in the app
+
+export const BOARD_NAME_MAX_LENGTH = 50;
+export const BOARD_NAME_MIN_LENGTH = 3;
+export const BOARD_DESCRIPTION_MAX_LENGTH = 100;
+export const BOARD_DESCRIPTION_MIN_LENGTH = 3;
+export const TASK_NAME_MAX_LENGTH = 50;
+export const TASK_NAME_MIN_LENGTH = 3;
+export const TASK_DESCRIPTION_MAX_LENGTH = 200;
+export const TASK_DESCRIPTION_MIN_LENGTH = 3;

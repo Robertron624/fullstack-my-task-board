@@ -5,9 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import { getStatusStyles } from "@/app/utils";
-import { taskIconOptions, statusOptions } from "@/app/constants";
+import { taskIconOptions, statusOptions, TASK_NAME_MIN_LENGTH, TASK_DESCRIPTION_MIN_LENGTH, TASK_NAME_MAX_LENGTH, TASK_DESCRIPTION_MAX_LENGTH  } from "@/app/constants";
 import { Task, TaskStatus } from "@/app/types";
-
 import { API_URL } from "@/app/config/config";
 
 interface TaskFormProps {
@@ -26,7 +25,7 @@ interface TaskFormValues {
 
 const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
   try {
-    const url = `${API_URL}boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}/tasks`;
 
     const response = await fetch(url, {
       method: "POST",
@@ -46,7 +45,10 @@ const addNewTask = async (data: Omit<Task, "_id">, boardId: string) => {
 
 const updateTask = async (data: Task, boardId: string) => {
   try {
-    const url = `${API_URL}boards/${boardId}`;
+
+    const taskId = data._id as string;
+
+    const url = `${API_URL}boards/${boardId}/tasks/${taskId}`;
 
     const response = await fetch(url, {
       method: "PUT",
@@ -55,6 +57,7 @@ const updateTask = async (data: Task, boardId: string) => {
       },
       body: JSON.stringify(data),
     });
+
     if (!response.ok) {
       console.error("response not ok: ", response);
       throw new Error("Failed to update task");
@@ -66,7 +69,7 @@ const updateTask = async (data: Task, boardId: string) => {
 
 const deleteTask = async (taskId: string, boardId: string) => {
   try {
-    const url = `${API_URL}boards/${boardId}`;
+    const url = `${API_URL}boards/${boardId}/tasks/${taskId}`;
 
     const response = await fetch(url, {
       method: "DELETE",
@@ -124,11 +127,13 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
 
     event?.preventDefault();
 
+    const { taskName, taskDesc, taskIcon, taskStatus } = data;
+
     const dataToSubmit = {
-      name: data.taskName,
-      description: data.taskDesc,
-      icon: data.taskIcon,
-      status: data.taskStatus || "to-do",
+      name: taskName,
+      description: taskDesc,
+      icon: taskIcon,
+      status: taskStatus || "to-do",
     };
 
     let isToastSuccess = false;
@@ -227,12 +232,14 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       <input
         type='text'
         id='task-name'
-        className='w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue focus:border-blue focus:border-0 focus:border-none'
+        className={`w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus-visible:outline-2 focus-visible:outline focus-visible:border-0 focus-visible:border-none ${
+          errors.taskName ? "focus-visible:outline-red" : "focus-visible:outline-blue"
+        }`}
         placeholder='Enter task name'
         {...register("taskName", {
           required: true,
-          maxLength: { value: 80, message: "Task name is too long" },
-          minLength: { value: 3, message: "Task name is too short" },
+          maxLength: { value: TASK_NAME_MAX_LENGTH, message: "Task name is too long" },
+          minLength: { value: TASK_NAME_MIN_LENGTH, message: "Task name is too short" },
         })}
       />
         {errors.taskName && (
@@ -248,13 +255,15 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       </label>
       <textarea
         id='task-desc'
-        className='w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue focus:border-blue focus:border-0 focus:border-none'
+        className={`w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus-visible:outline-2 focus-visible:outline focus-visible:border-0 focus-visible:border-none ${
+          errors.taskDesc ? "focus-visible:outline-red" : "focus-visible:outline-blue"
+        }`}
         placeholder='Enter a short description'
         rows={6}
         {...register("taskDesc", {
           required: true,
-          maxLength: { value: 200, message: "Description is too long" },
-          minLength: { value: 3, message: "Description is too short" },
+          maxLength: { value: TASK_DESCRIPTION_MAX_LENGTH, message: "Description is too long" },
+          minLength: { value: TASK_DESCRIPTION_MIN_LENGTH, message: "Description is too short" },
         })}
       ></textarea>
       {errors.taskDesc && (
@@ -264,7 +273,7 @@ export default function TaskForm({ isEditMode = false, onCloseModal, boardId, ta
       )}
       <div className='mt-6'>
         <p className='mb-2 text-medium-gray text-sm'>Icon</p>
-        <div className='flex gap-3'>
+        <div className='flex gap-3 flex-wrap'>
           {/* each of the task icon options is a radio button */}
           {taskIconOptions.map((option) => {
             return (

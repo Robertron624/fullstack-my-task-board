@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+import { BOARD_NAME_MAX_LENGTH, BOARD_NAME_MIN_LENGTH, BOARD_DESCRIPTION_MAX_LENGTH, BOARD_DESCRIPTION_MIN_LENGTH } from '@/app/constants';
 import { API_URL } from '@/app/config/config';
 
 const updateBoard = async (boardId: string, data: EditBoardFormValues) => {
@@ -30,7 +31,6 @@ const updateBoard = async (boardId: string, data: EditBoardFormValues) => {
     }
 };
 
-
 interface EditBoardFormValues {
     name: string;
     description?: string;
@@ -39,13 +39,13 @@ interface EditBoardFormValues {
 interface EditBoardFormProps {
     onCloseModal: () => void;
     boardData: { name: string; description?: string; _id: string };
-    }
+}
 
 export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFormProps) {
 
     const router = useRouter();
 
-    const { register, handleSubmit } = useForm<EditBoardFormValues>({
+    const { register, handleSubmit, formState: {errors} } = useForm<EditBoardFormValues>({
         defaultValues: {
             name: boardData.name,
             description: boardData.description,
@@ -60,6 +60,7 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
             router.refresh();
         }
         catch (error: any) {
+            console.error('Error updating board: ', error);
             toast.error('Failed to update board');
         }
     }
@@ -72,17 +73,42 @@ export default function EditBoardForm ({ onCloseModal, boardData }: EditBoardFor
                     <input
                         type='text'
                         id='name'
-                        className='p-2 border border-light-gray rounded-lg'
-                        {...register('name')}
+                        className={`p-2 border border-light-gray rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:border-none ${
+                            errors.name ? 'focus:visible:outline-red' : 'focus-visible:outline-blue'
+                        }`}
+                        {...register('name', {
+                            required: 'Board name is required',
+                            minLength: {
+                                value: BOARD_NAME_MIN_LENGTH,
+                                message: `Board name must be at least ${BOARD_NAME_MIN_LENGTH} characters long`,
+                            },
+                            maxLength: {
+                                value: BOARD_NAME_MAX_LENGTH,
+                                message: `Board name must be at most ${BOARD_NAME_MAX_LENGTH} characters long`,
+                            },
+                        })}
                     />
+                    {errors.name && <p className='text-red'>{errors.name.message}</p>}
                 </div>
                 <div className='flex flex-col gap-2'>
                     <label htmlFor='description' className='text-lg'>Board description</label>
                     <textarea
                         id='description'
-                        className='p-2 border border-light-gray rounded-lg'
-                        {...register('description')}
+                        className={`p-2 border border-light-gray rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:border-none ${
+                            errors.description ? 'focus:visible:outline-red' : 'focus-visible:outline-blue'
+                        }`}
+                        {...register('description', {
+                            maxLength: {
+                                value: BOARD_DESCRIPTION_MAX_LENGTH,
+                                message: `Board description must be at most ${BOARD_DESCRIPTION_MAX_LENGTH} characters long`,
+                            },
+                            minLength: {
+                                value: BOARD_DESCRIPTION_MIN_LENGTH,
+                                message: `Board description must be at least ${BOARD_DESCRIPTION_MIN_LENGTH} characters long`,
+                            },
+                        })}
                     />
+                    {errors.description && <p className='text-red'>{errors.description.message}</p>}
                 </div>
                 <div className='flex justify-end gap-4'>
                     <button
