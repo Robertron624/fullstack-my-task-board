@@ -29,7 +29,7 @@ export default async function Home() {
             {boards.map((board) => {
               return (
                 <div key={board._id} className='w-full flex justify-between'>
-                  <h2 className='text-2xl font-semibold'>{board.name}</h2>
+                  <h2 className='text-2xl font-semibold max-w-xs overflow-x-hidden text-ellipsis'>{board.name}</h2>
                   <Link href={`/boards/${board._id}`}>
                     <span className='text-xl hover:underline text-blue focus:outline-none duration-300'>
                       Go to board
